@@ -1,7 +1,13 @@
 <div class="app-root">
-  <aside class="sidebar">
+  <!-- <a href="#main-content" class="skip-link">Skip to main content</a> -->
+
+  <aside
+    class="sidebar"
+    role="complementary"
+    aria-label="Navigation and contact information"
+  >
     <div class="side-inner">
-      <div class="avatar">KW</div>
+      <div class="avatar" aria-hidden="true">KW</div>
       <h1 class="side-name">
         Konrad<br />
         Wisowski
@@ -9,60 +15,97 @@
       <p class="side-title">{{ data.title }}</p>
       <div class="side-divider"></div>
 
-      <nav class="nav">
+      <nav class="nav" aria-label="Main navigation">
         <button
           *ngFor="let section of sections"
           class="nav-btn"
           [class.active]="active === section"
+          [attr.aria-current]="active === section ? 'page' : null"
           (click)="scrollTo(section)"
+          type="button"
         >
-          <span class="nav-dot" [class.active]="active === section"></span>
+          <span
+            class="nav-dot"
+            [class.active]="active === section"
+            aria-hidden="true"
+          ></span>
           {{ section }}
         </button>
       </nav>
 
-      <div class="side-contact">
-        <a class="contact-link" [href]="'mailto:' + data.email">
-          <span class="contact-icon">✉</span>
+      <div class="side-contact" role="region" aria-label="Contact information">
+        <a
+          class="contact-link"
+          [href]="'mailto:' + data.email"
+          aria-label="Send email to Konrad Wisowski"
+        >
+          <span class="contact-icon" aria-hidden="true">✉</span>
           <span class="contact-text">{{ data.email }}</span>
         </a>
         <div class="contact-row">
-          <span class="contact-icon">📍</span>
+          <span class="contact-icon" aria-hidden="true">📍</span>
           <span class="contact-text">{{ data.location }}</span>
         </div>
         <a
           class="contact-link"
           [href]="'https://' + data.linkedin"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
+          aria-label="Visit Konrad Wisowski's LinkedIn profile (opens in new tab)"
         >
-          <span class="contact-icon">in</span>
+          <span class="contact-icon" aria-hidden="true">in</span>
           <span class="contact-text">LinkedIn</span>
         </a>
       </div>
     </div>
   </aside>
 
-  <header class="mobile-header">
+  <header class="mobile-header" role="banner">
     <span class="mobile-name">{{ data.name }}</span>
-    <button class="hamburger" (click)="toggleMenu()">
-      {{ menuOpen ? "✕" : "☰" }}
+    <button
+      class="hamburger"
+      (click)="toggleMenu()"
+      type="button"
+      [attr.aria-expanded]="menuOpen"
+      aria-controls="mobile-menu"
+      aria-label="Toggle navigation menu"
+    >
+      <span aria-hidden="true">{{ menuOpen ? "✕" : "☰" }}</span>
     </button>
-    <div class="mobile-menu" *ngIf="menuOpen">
+    <nav
+      class="mobile-menu"
+      *ngIf="menuOpen"
+      id="mobile-menu"
+      aria-label="Mobile navigation"
+    >
       <button
         class="mobile-nav-btn"
         *ngFor="let section of sections"
         (click)="scrollTo(section)"
+        type="button"
       >
         {{ section }}
       </button>
-    </div>
+    </nav>
   </header>
 
-  <main #mainEl class="main" (scroll)="onScroll()">
-    <section #sectionEl class="section" data-section="About">
-      <div class="hero-tag">Available for new opportunities</div>
-      <h2 class="hero-name">
+  <main
+    #mainEl
+    class="main"
+    (scroll)="onScroll()"
+    id="main-content"
+    role="main"
+  >
+    <section
+      #sectionEl
+      class="section"
+      data-section="About"
+      aria-labelledby="about-heading"
+    >
+      <div class="hero-tag" role="status" aria-live="polite">
+        Available for new opportunities
+      </div>
+      <h2 class="hero-name" id="about-heading">
         <span
           *ngFor="let word of heroWords; let i = index"
           class="fade-up"
@@ -73,45 +116,55 @@
       </h2>
       <p class="hero-title">{{ data.title }}</p>
       <p class="summary-text">{{ data.summary }}</p>
-
-      <div class="quick-tags">
-        <span class="quick-tag" *ngFor="let tag of quickTags">{{ tag }}</span>
-      </div>
     </section>
 
-    <section #sectionEl class="section" data-section="Skills">
-      <div class="section-label">
+    <section
+      #sectionEl
+      class="section"
+      data-section="Skills"
+      aria-labelledby="skills-heading"
+    >
+      <div class="section-label" aria-hidden="true">
         <span class="section-label-line"></span>
         <span class="section-label-text">SKILLS</span>
       </div>
-      <h3 class="section-title">Technical Expertise</h3>
-      <div class="skills-grid">
-        <span class="skill-item fade-up" *ngFor="let skill of data.skills">
+      <h2 class="section-title" id="skills-heading">Technical Expertise</h2>
+      <ul class="skills-grid" role="list">
+        <li class="skill-item fade-up" *ngFor="let skill of data.skills">
           {{ skill }}
-        </span>
-      </div>
+        </li>
+      </ul>
 
       <div class="courses-box">
-        <p class="courses-label">Courses & Certifications</p>
-        <div class="course-item" *ngFor="let course of data.courses">
-          <span class="course-dot">◆</span>
-          {{ course }}
-        </div>
+        <h3 class="courses-label">Courses & Certifications</h3>
+        <ul role="list">
+          <li class="course-item" *ngFor="let course of data.courses">
+            <span class="course-dot" aria-hidden="true">◆</span>
+            {{ course }}
+          </li>
+        </ul>
       </div>
     </section>
 
-    <section #sectionEl class="section" data-section="Experience">
-      <div class="section-label">
+    <section
+      #sectionEl
+      class="section"
+      data-section="Experience"
+      aria-labelledby="experience-heading"
+    >
+      <div class="section-label" aria-hidden="true">
         <span class="section-label-line"></span>
         <span class="section-label-text">EXPERIENCE</span>
       </div>
-      <h3 class="section-title">Professional History</h3>
-      <div class="timeline">
-        <div
+      <h2 class="section-title" id="experience-heading">
+        Professional History
+      </h2>
+      <ol class="timeline" role="list">
+        <li
           class="timeline-item fade-up"
           *ngFor="let exp of data.experience; let i = index"
         >
-          <div class="timeline-line">
+          <div class="timeline-line" aria-hidden="true">
             <div class="timeline-dot"></div>
             <div
               class="timeline-connector"
@@ -130,20 +183,30 @@
               </div>
             </div>
             <p class="exp-desc">{{ exp.description }}</p>
-            <div class="tag-row" *ngIf="exp.tags.length">
-              <span class="tag" *ngFor="let tag of exp.tags">{{ tag }}</span>
-            </div>
+            <ul
+              class="tag-row"
+              *ngIf="exp.tags.length"
+              role="list"
+              aria-label="Technologies used"
+            >
+              <li class="tag" *ngFor="let tag of exp.tags">{{ tag }}</li>
+            </ul>
           </div>
-        </div>
-      </div>
+        </li>
+      </ol>
     </section>
 
-    <section #sectionEl class="section" data-section="Education">
-      <div class="section-label">
+    <section
+      #sectionEl
+      class="section"
+      data-section="Education"
+      aria-labelledby="education-heading"
+    >
+      <div class="section-label" aria-hidden="true">
         <span class="section-label-line"></span>
         <span class="section-label-text">EDUCATION</span>
       </div>
-      <h3 class="section-title">Academic Background</h3>
+      <h2 class="section-title" id="education-heading">Academic Background</h2>
       <div class="edu-grid">
         <div
           class="edu-card fade-up"
@@ -157,20 +220,25 @@
       </div>
     </section>
 
-    <section #sectionEl class="section" data-section="Publication">
-      <div class="section-label">
+    <section
+      #sectionEl
+      class="section"
+      data-section="Publication"
+      aria-labelledby="publications-heading"
+    >
+      <div class="section-label" aria-hidden="true">
         <span class="section-label-line"></span>
         <span class="section-label-text">RESEARCH</span>
       </div>
-      <h3 class="section-title">Publications</h3>
+      <h2 class="section-title" id="publications-heading">Publications</h2>
       <div
         class="pub-card fade-up"
         *ngFor="let pub of data.publications; let i = index"
         [style.animationDelay]="i * 100 + 'ms'"
       >
-        <div class="pub-accent"></div>
-        <div class="pub-body">
-          <div class="pub-badge">Peer-Reviewed</div>
+        <div class="pub-accent" aria-hidden="true"></div>
+        <article class="pub-body">
+          <div class="pub-badge" role="status">Peer-Reviewed</div>
           <h4 class="pub-title">{{ pub.title }}</h4>
           <p class="pub-venue">{{ pub.venue }}</p>
           <p class="pub-desc">{{ pub.description }}</p>
@@ -179,11 +247,14 @@
             class="pub-doi"
             [href]="'https://doi.org/' + pub.doi"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
+            [attr.aria-label]="
+              'View publication DOI ' + pub.doi + ' (opens in new tab)'
+            "
           >
             DOI: {{ pub.doi }}
           </a>
-        </div>
+        </article>
       </div>
     </section>
   </main>
