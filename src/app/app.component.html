@@ -1,0 +1,190 @@
+<div class="app-root">
+  <aside class="sidebar">
+    <div class="side-inner">
+      <div class="avatar">KW</div>
+      <h1 class="side-name">
+        Konrad<br />
+        Wisowski
+      </h1>
+      <p class="side-title">{{ data.title }}</p>
+      <div class="side-divider"></div>
+
+      <nav class="nav">
+        <button
+          *ngFor="let section of sections"
+          class="nav-btn"
+          [class.active]="active === section"
+          (click)="scrollTo(section)"
+        >
+          <span class="nav-dot" [class.active]="active === section"></span>
+          {{ section }}
+        </button>
+      </nav>
+
+      <div class="side-contact">
+        <a class="contact-link" [href]="'mailto:' + data.email">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text">{{ data.email }}</span>
+        </a>
+        <div class="contact-row">
+          <span class="contact-icon">📍</span>
+          <span class="contact-text">{{ data.location }}</span>
+        </div>
+        <a
+          class="contact-link"
+          [href]="'https://' + data.linkedin"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span class="contact-icon">in</span>
+          <span class="contact-text">LinkedIn</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <header class="mobile-header">
+    <span class="mobile-name">{{ data.name }}</span>
+    <button class="hamburger" (click)="toggleMenu()">
+      {{ menuOpen ? "✕" : "☰" }}
+    </button>
+    <div class="mobile-menu" *ngIf="menuOpen">
+      <button
+        class="mobile-nav-btn"
+        *ngFor="let section of sections"
+        (click)="scrollTo(section)"
+      >
+        {{ section }}
+      </button>
+    </div>
+  </header>
+
+  <main #mainEl class="main" (scroll)="onScroll()">
+    <section #sectionEl class="section" data-section="About">
+      <div class="hero-tag">Available for new opportunities</div>
+      <h2 class="hero-name">
+        <span
+          *ngFor="let word of heroWords; let i = index"
+          class="fade-up"
+          [style.animationDelay]="i * 120 + 'ms'"
+        >
+          {{ word }}
+        </span>
+      </h2>
+      <p class="hero-title">{{ data.title }}</p>
+      <p class="summary-text">{{ data.summary }}</p>
+
+      <div class="quick-tags">
+        <span class="quick-tag" *ngFor="let tag of quickTags">{{ tag }}</span>
+      </div>
+    </section>
+
+    <section #sectionEl class="section" data-section="Skills">
+      <div class="section-label">
+        <span class="section-label-line"></span>
+        <span class="section-label-text">SKILLS</span>
+      </div>
+      <h3 class="section-title">Technical Expertise</h3>
+      <div class="skills-grid">
+        <span class="skill-item fade-up" *ngFor="let skill of data.skills">
+          {{ skill }}
+        </span>
+      </div>
+
+      <div class="courses-box">
+        <p class="courses-label">Courses & Certifications</p>
+        <div class="course-item" *ngFor="let course of data.courses">
+          <span class="course-dot">◆</span>
+          {{ course }}
+        </div>
+      </div>
+    </section>
+
+    <section #sectionEl class="section" data-section="Experience">
+      <div class="section-label">
+        <span class="section-label-line"></span>
+        <span class="section-label-text">EXPERIENCE</span>
+      </div>
+      <h3 class="section-title">Professional History</h3>
+      <div class="timeline">
+        <div
+          class="timeline-item fade-up"
+          *ngFor="let exp of data.experience; let i = index"
+        >
+          <div class="timeline-line">
+            <div class="timeline-dot"></div>
+            <div
+              class="timeline-connector"
+              *ngIf="i < data.experience.length - 1"
+            ></div>
+          </div>
+          <div class="timeline-content">
+            <div class="exp-header">
+              <div>
+                <h4 class="exp-title">{{ exp.title }}</h4>
+                <p class="exp-company">{{ exp.company }}</p>
+              </div>
+              <div class="exp-meta">
+                <span class="exp-period">{{ exp.period }}</span>
+                <span class="exp-location">{{ exp.location }}</span>
+              </div>
+            </div>
+            <p class="exp-desc">{{ exp.description }}</p>
+            <div class="tag-row" *ngIf="exp.tags.length">
+              <span class="tag" *ngFor="let tag of exp.tags">{{ tag }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section #sectionEl class="section" data-section="Education">
+      <div class="section-label">
+        <span class="section-label-line"></span>
+        <span class="section-label-text">EDUCATION</span>
+      </div>
+      <h3 class="section-title">Academic Background</h3>
+      <div class="edu-grid">
+        <div
+          class="edu-card fade-up"
+          *ngFor="let edu of data.education; let i = index"
+        >
+          <h4 class="edu-degree">{{ edu.degree }}</h4>
+          <p class="edu-school">{{ edu.school }}</p>
+          <p class="edu-period">{{ edu.period }}</p>
+          <p class="edu-note" *ngIf="edu.note">{{ edu.note }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section #sectionEl class="section" data-section="Publication">
+      <div class="section-label">
+        <span class="section-label-line"></span>
+        <span class="section-label-text">RESEARCH</span>
+      </div>
+      <h3 class="section-title">Publications</h3>
+      <div
+        class="pub-card fade-up"
+        *ngFor="let pub of data.publications; let i = index"
+        [style.animationDelay]="i * 100 + 'ms'"
+      >
+        <div class="pub-accent"></div>
+        <div class="pub-body">
+          <div class="pub-badge">Peer-Reviewed</div>
+          <h4 class="pub-title">{{ pub.title }}</h4>
+          <p class="pub-venue">{{ pub.venue }}</p>
+          <p class="pub-desc">{{ pub.description }}</p>
+          <a
+            *ngIf="pub.doi"
+            class="pub-doi"
+            [href]="'https://doi.org/' + pub.doi"
+            target="_blank"
+            rel="noreferrer"
+          >
+            DOI: {{ pub.doi }}
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
